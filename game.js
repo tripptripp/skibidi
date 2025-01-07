@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderGame();
         resultDiv.textContent = '';
         enableButtons(true);
-        checkForBlackjack();
+        checkForBlackjack(); // Ensure this is called to check for Blackjacks immediately
         checkForSplit();
     }
 
@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             hand.forEach(card => {
                 handDiv.innerHTML += `<div class="card" data-value="${card.value}" data-suit="${card.suit}">${card.value}${card.suit}</div>`;
             });
+            const handTotal = calculateScore(hand);
+            handDiv.innerHTML += `<div class="hand-total">Total: ${handTotal}</div>`; // Add hand total
+
             if (handIndex === currentHandIndex) {
                 handDiv.classList.add('active-hand'); // Highlight active hand
             }
@@ -77,26 +80,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return score;
     }
-
     function checkForBlackjack() {
         const playerScore = calculateScore(playerHands[0]);
         const dealerScore = calculateScore(dealerHand);
 
+        // Check if the player has a Blackjack
         if (playerHands[0].length === 2 && playerScore === 21) {
-            if (dealerScore === 21) {
+            if (dealerHand.length === 2 && dealerScore === 21) {
                 dealerHidden = false;
                 renderGame();
                 endGame("It's a tie! Both have Blackjack.");
             } else {
+                balance += currentWager * 1.5; // Payout 1.5 times the wager
                 endGame("Player Blackjack! You win!");
             }
+            enableButtons(false); // Disable buttons when player has a Blackjack
             return;
         }
 
+        // Check if the dealer has a Blackjack
         if (dealerHand.length === 2 && dealerScore === 21) {
             dealerHidden = false;
             renderGame();
             endGame("Dealer Blackjack! You lose.");
+            enableButtons(false); // Disable buttons when dealer has a Blackjack
             return;
         }
     }
@@ -168,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
             stand();
         }
     }
-
     function split() {
         const firstCard = playerHands[currentHandIndex][0];
         const secondCard = playerHands[currentHandIndex][1];
