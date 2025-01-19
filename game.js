@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return score;
     }
+
     function checkForBlackjack() {
         const playerScore = calculateScore(playerHands[0]);
         const dealerScore = calculateScore(dealerHand);
@@ -89,12 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dealerHand.length === 2 && dealerScore === 21) {
                 dealerHidden = false;
                 renderGame();
-                endGame("It's a tie! Both have Blackjack.");
+                enableButtons(false); // Disable buttons when player has a Blackjack
+                resultDiv.textContent = "It's a tie! Both have Blackjack.";
             } else {
                 balance += currentWager * 1.5; // Payout 1.5 times the wager
-                endGame("Player Blackjack! You win!");
+                enableButtons(false); // Disable buttons when player has a Blackjack
+                renderGame();
+                resultDiv.textContent = "Player Blackjack! You win!";
             }
-            enableButtons(false); // Disable buttons when player has a Blackjack
+            setTimeout(resetHand, 2500); // Wait 2.5 seconds before resetting the hand
             return;
         }
 
@@ -102,10 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dealerHand.length === 2 && dealerScore === 21) {
             dealerHidden = false;
             renderGame();
-            endGame("Dealer Blackjack! You lose.");
             enableButtons(false); // Disable buttons when dealer has a Blackjack
+            resultDiv.textContent = "Dealer Blackjack! You lose.";
+            setTimeout(resetHand, 2500); // Wait 2.5 seconds before resetting the hand
             return;
         }
+    }
+
+    function resetHand() {
+        document.getElementById('betting-area').style.display = 'block';
+        document.getElementById('game-area').style.display = 'none';
+        resultDiv.textContent = '';
     }
 
     function checkForSplit() {
@@ -175,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stand();
         }
     }
+
     function split() {
         const firstCard = playerHands[currentHandIndex][0];
         const secondCard = playerHands[currentHandIndex][1];
@@ -214,9 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             document.getElementById('betting-area').style.display = 'block';
             document.getElementById('game-area').style.display = 'none';
-        }, 2000);
+            resultDiv.textContent = '';
+        }, 2500);
     }
-
     function enableButtons(enabled) {
         document.getElementById('hit-btn').disabled = !enabled;
         document.getElementById('stand-btn').disabled = !enabled;
@@ -264,3 +276,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startGame();
 });
+
