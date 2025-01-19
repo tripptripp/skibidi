@@ -195,6 +195,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstHand = [firstCard, deck.pop()];
             const secondHand = [secondCard, deck.pop()];
             playerHands.splice(currentHandIndex, 1, firstHand, secondHand);
+
+            // Adjust the balance for the additional wager
+            if (currentWager <= balance) {
+                balance -= currentWager;
+                document.getElementById('balance').textContent = balance;
+            } else {
+                alert("You don't have enough balance to split!");
+                return;
+            }
+
             renderGame();
             checkForSplit();
         }
@@ -229,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultDiv.textContent = '';
         }, 2500);
     }
+
     function enableButtons(enabled) {
         document.getElementById('hit-btn').disabled = !enabled;
         document.getElementById('stand-btn').disabled = !enabled;
@@ -276,4 +287,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startGame();
 });
-
