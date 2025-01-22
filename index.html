@@ -4,29 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blackjack Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="balance-area">
-        Balance: <span id="balance">25</span>
+    <div id="app">
+        <div id="auth-area">
+            <h2>Register</h2>
+            <form id="register-form">
+                <input type="text" id="reg-username" placeholder="Username" required>
+                <input type="email" id="reg-email" placeholder="Email" required>
+                <input type="password" id="reg-password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div id="betting-area" style="display: none;">
+            <!-- Betting interface -->
+        </div>
+        <div id="game-area" style="display: none;">
+            <!-- Game interface -->
+        </div>
     </div>
-    <div id="betting-area">
-        <button class="chip" data-value="1">$1</button>
-        <button class="chip" data-value="5">$5</button>
-        <button class="chip" data-value="10">$10</button>
-        <div>Current Wager: <span id="current-wager">0</span></div>
-        <button id="deal-btn">Deal</button>
-    </div>
-    <div id="game-area" style="display: none;">
-        <div id="dealer-area"></div>
-        <div id="player-area"></div>
-        <div id="current-wager-display">Current Wager: <span id="current-wager-display-amount">0</span></div>
-        <div id="result"></div>
-        <button id="hit-btn">Hit</button>
-        <button id="stand-btn">Stand</button>
-        <button id="double-btn">Double Down</button>
-        <button id="split-btn">Split</button>
-    </div>
-    <script src="game.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
